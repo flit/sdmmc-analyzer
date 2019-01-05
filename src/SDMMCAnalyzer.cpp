@@ -54,7 +54,10 @@ void SDMMCAnalyzer::WorkerThread()
 			if (response.mType != MMC_RSP_NONE)
 				WaitForAndReadMMCResponse(response);
 		} else {
-			/* FIXME: implement SD response handling */
+			/* FIXME: implement unique SD response handling */
+            struct MMCResponse response = SDMMCHelpers::MMCCommandResponse(cmdindex);
+            if (response.mType != MMC_RSP_NONE)
+                WaitForAndReadMMCResponse(response);
 		}
 	}
 }
