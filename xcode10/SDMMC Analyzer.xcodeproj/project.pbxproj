@@ -1,0 +1,373 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		02811AB621E1310100D97572 /* SDMMCAnalyzerSettings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02811AAC21E1310100D97572 /* SDMMCAnalyzerSettings.cpp */; };
+		02811AB721E1310100D97572 /* SDMMCAnalyzerSettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 02811AAD21E1310100D97572 /* SDMMCAnalyzerSettings.h */; };
+		02811AB821E1310100D97572 /* SDMMCAnalyzer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02811AAE21E1310100D97572 /* SDMMCAnalyzer.cpp */; };
+		02811AB921E1310100D97572 /* SDMMCHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 02811AAF21E1310100D97572 /* SDMMCHelpers.h */; };
+		02811ABA21E1310100D97572 /* SDMMCSimulationDataGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02811AB021E1310100D97572 /* SDMMCSimulationDataGenerator.cpp */; };
+		02811ABB21E1310100D97572 /* SDMMCSimulationDataGenerator.h in Headers */ = {isa = PBXBuildFile; fileRef = 02811AB121E1310100D97572 /* SDMMCSimulationDataGenerator.h */; };
+		02811ABC21E1310100D97572 /* SDMMCAnalyzerResults.h in Headers */ = {isa = PBXBuildFile; fileRef = 02811AB221E1310100D97572 /* SDMMCAnalyzerResults.h */; };
+		02811ABD21E1310100D97572 /* SDMMCHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02811AB321E1310100D97572 /* SDMMCHelpers.cpp */; };
+		02811ABE21E1310100D97572 /* SDMMCAnalyzer.h in Headers */ = {isa = PBXBuildFile; fileRef = 02811AB421E1310100D97572 /* SDMMCAnalyzer.h */; };
+		02811ABF21E1310100D97572 /* SDMMCAnalyzerResults.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 02811AB521E1310100D97572 /* SDMMCAnalyzerResults.cpp */; };
+		02811ACC21E1322100D97572 /* libAnalyzer.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 02811ACB21E1322100D97572 /* libAnalyzer.dylib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		02811A9D21E130AD00D97572 /* libSDMMC Analyzer.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = "libSDMMC Analyzer.dylib"; sourceTree = BUILT_PRODUCTS_DIR; };
+		02811AAC21E1310100D97572 /* SDMMCAnalyzerSettings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SDMMCAnalyzerSettings.cpp; sourceTree = "<group>"; };
+		02811AAD21E1310100D97572 /* SDMMCAnalyzerSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDMMCAnalyzerSettings.h; sourceTree = "<group>"; };
+		02811AAE21E1310100D97572 /* SDMMCAnalyzer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SDMMCAnalyzer.cpp; sourceTree = "<group>"; };
+		02811AAF21E1310100D97572 /* SDMMCHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDMMCHelpers.h; sourceTree = "<group>"; };
+		02811AB021E1310100D97572 /* SDMMCSimulationDataGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SDMMCSimulationDataGenerator.cpp; sourceTree = "<group>"; };
+		02811AB121E1310100D97572 /* SDMMCSimulationDataGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDMMCSimulationDataGenerator.h; sourceTree = "<group>"; };
+		02811AB221E1310100D97572 /* SDMMCAnalyzerResults.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDMMCAnalyzerResults.h; sourceTree = "<group>"; };
+		02811AB321E1310100D97572 /* SDMMCHelpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SDMMCHelpers.cpp; sourceTree = "<group>"; };
+		02811AB421E1310100D97572 /* SDMMCAnalyzer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDMMCAnalyzer.h; sourceTree = "<group>"; };
+		02811AB521E1310100D97572 /* SDMMCAnalyzerResults.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SDMMCAnalyzerResults.cpp; sourceTree = "<group>"; };
+		02811AC121E1320000D97572 /* AnalyzerHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnalyzerHelpers.h; sourceTree = "<group>"; };
+		02811AC221E1320000D97572 /* AnalyzerResults.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnalyzerResults.h; sourceTree = "<group>"; };
+		02811AC321E1320000D97572 /* SimulationChannelDescriptor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SimulationChannelDescriptor.h; sourceTree = "<group>"; };
+		02811AC421E1320000D97572 /* AnalyzerChannelData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnalyzerChannelData.h; sourceTree = "<group>"; };
+		02811AC521E1320000D97572 /* Analyzer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Analyzer.h; sourceTree = "<group>"; };
+		02811AC621E1320000D97572 /* LogicPublicTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LogicPublicTypes.h; sourceTree = "<group>"; };
+		02811AC721E1320000D97572 /* AnalyzerSettingInterface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnalyzerSettingInterface.h; sourceTree = "<group>"; };
+		02811AC821E1320000D97572 /* AnalyzerTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnalyzerTypes.h; sourceTree = "<group>"; };
+		02811AC921E1320000D97572 /* AnalyzerSettings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AnalyzerSettings.h; sourceTree = "<group>"; };
+		02811ACB21E1322100D97572 /* libAnalyzer.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libAnalyzer.dylib; path = ../AnalyzerSDK/lib/libAnalyzer.dylib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		02811A9B21E130AD00D97572 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				02811ACC21E1322100D97572 /* libAnalyzer.dylib in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		02811A9421E130AD00D97572 = {
+			isa = PBXGroup;
+			children = (
+				02811AC021E1320000D97572 /* include */,
+				02811AAB21E1310100D97572 /* src */,
+				02811A9E21E130AD00D97572 /* Products */,
+				02811ACA21E1322100D97572 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		02811A9E21E130AD00D97572 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				02811A9D21E130AD00D97572 /* libSDMMC Analyzer.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		02811AAB21E1310100D97572 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				02811AAE21E1310100D97572 /* SDMMCAnalyzer.cpp */,
+				02811AB421E1310100D97572 /* SDMMCAnalyzer.h */,
+				02811AB521E1310100D97572 /* SDMMCAnalyzerResults.cpp */,
+				02811AB221E1310100D97572 /* SDMMCAnalyzerResults.h */,
+				02811AAC21E1310100D97572 /* SDMMCAnalyzerSettings.cpp */,
+				02811AAD21E1310100D97572 /* SDMMCAnalyzerSettings.h */,
+				02811AB321E1310100D97572 /* SDMMCHelpers.cpp */,
+				02811AAF21E1310100D97572 /* SDMMCHelpers.h */,
+				02811AB021E1310100D97572 /* SDMMCSimulationDataGenerator.cpp */,
+				02811AB121E1310100D97572 /* SDMMCSimulationDataGenerator.h */,
+			);
+			name = src;
+			path = ../src;
+			sourceTree = "<group>";
+		};
+		02811AC021E1320000D97572 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				02811AC521E1320000D97572 /* Analyzer.h */,
+				02811AC421E1320000D97572 /* AnalyzerChannelData.h */,
+				02811AC121E1320000D97572 /* AnalyzerHelpers.h */,
+				02811AC221E1320000D97572 /* AnalyzerResults.h */,
+				02811AC721E1320000D97572 /* AnalyzerSettingInterface.h */,
+				02811AC921E1320000D97572 /* AnalyzerSettings.h */,
+				02811AC821E1320000D97572 /* AnalyzerTypes.h */,
+				02811AC621E1320000D97572 /* LogicPublicTypes.h */,
+				02811AC321E1320000D97572 /* SimulationChannelDescriptor.h */,
+			);
+			name = include;
+			path = ../AnalyzerSDK/include;
+			sourceTree = "<group>";
+		};
+		02811ACA21E1322100D97572 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				02811ACB21E1322100D97572 /* libAnalyzer.dylib */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		02811A9921E130AD00D97572 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				02811ABE21E1310100D97572 /* SDMMCAnalyzer.h in Headers */,
+				02811ABC21E1310100D97572 /* SDMMCAnalyzerResults.h in Headers */,
+				02811ABB21E1310100D97572 /* SDMMCSimulationDataGenerator.h in Headers */,
+				02811AB721E1310100D97572 /* SDMMCAnalyzerSettings.h in Headers */,
+				02811AB921E1310100D97572 /* SDMMCHelpers.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		02811A9C21E130AD00D97572 /* SDMMC Analyzer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 02811AA821E130AD00D97572 /* Build configuration list for PBXNativeTarget "SDMMC Analyzer" */;
+			buildPhases = (
+				02811A9921E130AD00D97572 /* Headers */,
+				02811A9A21E130AD00D97572 /* Sources */,
+				02811A9B21E130AD00D97572 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "SDMMC Analyzer";
+			productName = "SDMMC Analyzer";
+			productReference = 02811A9D21E130AD00D97572 /* libSDMMC Analyzer.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		02811A9521E130AD00D97572 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "Immo Software";
+				TargetAttributes = {
+					02811A9C21E130AD00D97572 = {
+						CreatedOnToolsVersion = 10.1;
+					};
+				};
+			};
+			buildConfigurationList = 02811A9821E130AD00D97572 /* Build configuration list for PBXProject "SDMMC Analyzer" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 02811A9421E130AD00D97572;
+			productRefGroup = 02811A9E21E130AD00D97572 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				02811A9C21E130AD00D97572 /* SDMMC Analyzer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		02811A9A21E130AD00D97572 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				02811ABD21E1310100D97572 /* SDMMCHelpers.cpp in Sources */,
+				02811ABA21E1310100D97572 /* SDMMCSimulationDataGenerator.cpp in Sources */,
+				02811AB821E1310100D97572 /* SDMMCAnalyzer.cpp in Sources */,
+				02811AB621E1310100D97572 /* SDMMCAnalyzerSettings.cpp in Sources */,
+				02811ABF21E1310100D97572 /* SDMMCAnalyzerResults.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		02811AA621E130AD00D97572 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		02811AA721E130AD00D97572 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		02811AA921E130AD00D97572 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7V78BSKXHX;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../AnalyzerSDK/include";
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../AnalyzerSDK/lib";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		02811AAA21E130AD00D97572 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 7V78BSKXHX;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_PREFIX = lib;
+				GCC_ENABLE_CPP_EXCEPTIONS = YES;
+				GCC_ENABLE_CPP_RTTI = YES;
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				HEADER_SEARCH_PATHS = "$(SRCROOT)/../AnalyzerSDK/include";
+				LIBRARY_SEARCH_PATHS = "$(SRCROOT)/../AnalyzerSDK/lib";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		02811A9821E130AD00D97572 /* Build configuration list for PBXProject "SDMMC Analyzer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				02811AA621E130AD00D97572 /* Debug */,
+				02811AA721E130AD00D97572 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		02811AA821E130AD00D97572 /* Build configuration list for PBXNativeTarget "SDMMC Analyzer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				02811AA921E130AD00D97572 /* Debug */,
+				02811AAA21E130AD00D97572 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 02811A9521E130AD00D97572 /* Project object */;
+}
