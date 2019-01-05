@@ -90,6 +90,8 @@ void SDMMCAnalyzer::AdvanceToNextClock()
 		mClock->AdvanceToNextEdge();
 	} while (mClock->GetBitState() != search);
 
+    mResults->AddMarker(mClock->GetSampleNumber(), (mSettings->mSampleEdge == SAMPLE_EDGE_RISING) ?  AnalyzerResults::UpArrow : AnalyzerResults::DownArrow, mSettings->mClockChannel);
+
 	mCommand->AdvanceToAbsPosition(mClock->GetSampleNumber());
 }
 
