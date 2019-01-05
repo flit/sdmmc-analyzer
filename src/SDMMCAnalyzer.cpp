@@ -6,7 +6,7 @@
 const char SDMMCAnalyzer::Name[] = "SDMMC";
 
 SDMMCAnalyzer::SDMMCAnalyzer()
-:	Analyzer(),
+:	Analyzer2(),
 	mSettings(new SDMMCAnalyzerSettings()),
 	mSimulationInitialized(false)
 {
@@ -23,13 +23,16 @@ const char* SDMMCAnalyzer::GetAnalyzerName() const
 	return Name;
 }
 
+void SDMMCAnalyzer::SetupResults()
+{
+    mResults.reset(new SDMMCAnalyzerResults(this, mSettings.get()));
+    SetAnalyzerResults(mResults.get());
+
+    mResults->AddChannelBubblesWillAppearOn(mSettings->mCommandChannel);
+}
+
 void SDMMCAnalyzer::WorkerThread()
 {
-	mResults.reset(new SDMMCAnalyzerResults(this, mSettings.get()));
-	SetAnalyzerResults(mResults.get());
-
-	mResults->AddChannelBubblesWillAppearOn(mSettings->mCommandChannel);
-
 	mClock = GetAnalyzerChannelData(mSettings->mClockChannel);
 	mCommand = GetAnalyzerChannelData(mSettings->mCommandChannel);
 
