@@ -3,6 +3,25 @@
 #include "SDMMCAnalyzerSettings.h"
 #include "SDMMCHelpers.h"
 
+static const char * const kReplyStateNames[] = {
+           /* 0 */ "Idle",
+           /* 1 */ "Ready",
+           /* 2 */ "Ident",
+           /* 3 */ "Stby",
+           /* 4 */ "Tran",
+           /* 5 */ "Data",
+           /* 6 */ "Rcv",
+           /* 7 */ "Prg",
+           /* 8 */ "Dis",
+           /* 9 */ "Btst",
+           /* a */ "Slp",
+           /* b */ "reserved",
+           /* c */ "reserved",
+           /* d */ "reserved",
+           /* e */ "reserved",
+           /* f */ "reserved",
+        };
+
 SDMMCAnalyzerResults::SDMMCAnalyzerResults(SDMMCAnalyzer* analyzer, SDMMCAnalyzerSettings* settings)
 :	AnalyzerResults(),
 	mSettings(settings),
@@ -48,71 +67,14 @@ void SDMMCAnalyzerResults::GenerateBubbleText(U64 frame_index, Channel& channel,
 		switch (frame.mFlags) {
 		case MMC_RSP_R1:
 		{
-			const char *str_state = "reserved";
-			std::string str_flags("");
-
-			switch ((frame.mData1 >> 9) & 0xf) {
-			case 0: str_state = "Idle"; break;
-			case 1: str_state = "Ready"; break;
-			case 2: str_state = "Ident"; break;
-			case 3: str_state = "Stby"; break;
-			case 4: str_state = "Tran"; break;
-			case 5: str_state = "Data"; break;
-			case 6: str_state = "Rcv"; break;
-			case 7: str_state = "Prg"; break;
-			case 8: str_state = "Dis"; break;
-			case 9: str_state = "Btst"; break;
-			case 10: str_state = "Slp "; break;
-			}
+			const char *str_state = kReplyStateNames[((frame.mData1 >> 9) & 0xf)];
+            std::string str_flags = GetResponseFlagsDescription(frame);
 
 			AnalyzerHelpers::GetNumberString(frame.mData1, display_base, 32, str_32, sizeof(str_32));
 			
 			AddResultString("R1");
 			AddResultString("R1, ", str_state);
 			AddResultString("R1, ", str_state, ", rsp=", str_32);
-
-			if (frame.mData1 & (1 << 31))
-					str_flags += " ADDRESS_OUT_OF_RANGE";
-			if (frame.mData1 & (1 << 30))
-					str_flags += " ADDRESS_MISALIGN";
-			if (frame.mData1 & (1 << 29))
-					str_flags += " BLOCK_LEN_ERROR";
-			if (frame.mData1 & (1 << 28))
-					str_flags += " ERASE_SEQ_ERROR";
-			if (frame.mData1 & (1 << 27))
-					str_flags += " ERASE_PARAM";
-			if (frame.mData1 & (1 << 26))
-					str_flags += " WP_VIOLATION";
-			if (frame.mData1 & (1 << 25))
-					str_flags += " CARD_IS_LOCKED";
-			if (frame.mData1 & (1 << 24))
-					str_flags += " LOCK_UNLOCK_FAILED";
-			if (frame.mData1 & (1 << 23))
-					str_flags += " COM_CRC_ERROR";
-			if (frame.mData1 & (1 << 22))
-					str_flags += " ILLEGAL_COMMAND";
-			if (frame.mData1 & (1 << 21))
-					str_flags += " CARD_ECC_FAILED";
-			if (frame.mData1 & (1 << 20))
-					str_flags += " CC_ERROR";
-			if (frame.mData1 & (1 << 19))
-					str_flags += " ERROR";
-			if (frame.mData1 & (1 << 18))
-					str_flags += " UNDERRUN";
-			if (frame.mData1 & (1 << 17))
-					str_flags += " OVERRUN";
-			if (frame.mData1 & (1 << 16))
-					str_flags += " CID/CSD_OVERWRITE";
-			if (frame.mData1 & (1 << 15))
-					str_flags += " WP_ERASE_SKIP";
-			if (frame.mData1 & (1 << 13))
-					str_flags += " ERASE_RESET";
-			if (frame.mData1 & (1 << 8))
-					str_flags += " READY_FOR_DATA";
-			if (frame.mData1 & (1 << 7))
-					str_flags += " SWITCH_ERROR";
-			if (frame.mData1 & (1 << 5))
-					str_flags += " APP_CMD";
 
 			if (str_flags.length() > 0)
 				AddResultString("R1, ", str_state, ", rsp=", str_32, str_flags.c_str());
@@ -266,69 +228,12 @@ void SDMMCAnalyzerResults::GenerateFrameTabularText(U64 frame_index, DisplayBase
         switch (frame.mFlags) {
         case MMC_RSP_R1:
         {
-            const char *str_state = "reserved";
-            std::string str_flags("");
-
-            switch ((frame.mData1 >> 9) & 0xf) {
-            case 0: str_state = "Idle"; break;
-            case 1: str_state = "Ready"; break;
-            case 2: str_state = "Ident"; break;
-            case 3: str_state = "Stby"; break;
-            case 4: str_state = "Tran"; break;
-            case 5: str_state = "Data"; break;
-            case 6: str_state = "Rcv"; break;
-            case 7: str_state = "Prg"; break;
-            case 8: str_state = "Dis"; break;
-            case 9: str_state = "Btst"; break;
-            case 10: str_state = "Slp "; break;
-            }
+            const char *str_state = kReplyStateNames[((frame.mData1 >> 9) & 0xf)];
+            std::string str_flags = GetResponseFlagsDescription(frame);
 
             AnalyzerHelpers::GetNumberString(frame.mData1, display_base, 32, str_32, sizeof(str_32));
 
             AddTabularText("R1, ", str_state, ", rsp=", str_32);
-
-            if (frame.mData1 & (1 << 31))
-                    str_flags += " ADDRESS_OUT_OF_RANGE";
-            if (frame.mData1 & (1 << 30))
-                    str_flags += " ADDRESS_MISALIGN";
-            if (frame.mData1 & (1 << 29))
-                    str_flags += " BLOCK_LEN_ERROR";
-            if (frame.mData1 & (1 << 28))
-                    str_flags += " ERASE_SEQ_ERROR";
-            if (frame.mData1 & (1 << 27))
-                    str_flags += " ERASE_PARAM";
-            if (frame.mData1 & (1 << 26))
-                    str_flags += " WP_VIOLATION";
-            if (frame.mData1 & (1 << 25))
-                    str_flags += " CARD_IS_LOCKED";
-            if (frame.mData1 & (1 << 24))
-                    str_flags += " LOCK_UNLOCK_FAILED";
-            if (frame.mData1 & (1 << 23))
-                    str_flags += " COM_CRC_ERROR";
-            if (frame.mData1 & (1 << 22))
-                    str_flags += " ILLEGAL_COMMAND";
-            if (frame.mData1 & (1 << 21))
-                    str_flags += " CARD_ECC_FAILED";
-            if (frame.mData1 & (1 << 20))
-                    str_flags += " CC_ERROR";
-            if (frame.mData1 & (1 << 19))
-                    str_flags += " ERROR";
-            if (frame.mData1 & (1 << 18))
-                    str_flags += " UNDERRUN";
-            if (frame.mData1 & (1 << 17))
-                    str_flags += " OVERRUN";
-            if (frame.mData1 & (1 << 16))
-                    str_flags += " CID/CSD_OVERWRITE";
-            if (frame.mData1 & (1 << 15))
-                    str_flags += " WP_ERASE_SKIP";
-            if (frame.mData1 & (1 << 13))
-                    str_flags += " ERASE_RESET";
-            if (frame.mData1 & (1 << 8))
-                    str_flags += " READY_FOR_DATA";
-            if (frame.mData1 & (1 << 7))
-                    str_flags += " SWITCH_ERROR";
-            if (frame.mData1 & (1 << 5))
-                    str_flags += " APP_CMD";
 
             if (str_flags.length() > 0)
                 AddTabularText("R1, ", str_state, ", rsp=", str_32, str_flags.c_str());
@@ -436,6 +341,54 @@ void SDMMCAnalyzerResults::GenerateFrameTabularText(U64 frame_index, DisplayBase
 //        AddResultString("error");
         break;
     }
+}
+
+std::string SDMMCAnalyzerResults::GetResponseFlagsDescription(const Frame& frame)
+{
+    std::string str_flags("");
+    if (frame.mData1 & (1 << 31))
+        str_flags += " ADDRESS_OUT_OF_RANGE";
+    if (frame.mData1 & (1 << 30))
+        str_flags += " ADDRESS_MISALIGN";
+    if (frame.mData1 & (1 << 29))
+        str_flags += " BLOCK_LEN_ERROR";
+    if (frame.mData1 & (1 << 28))
+        str_flags += " ERASE_SEQ_ERROR";
+    if (frame.mData1 & (1 << 27))
+        str_flags += " ERASE_PARAM";
+    if (frame.mData1 & (1 << 26))
+        str_flags += " WP_VIOLATION";
+    if (frame.mData1 & (1 << 25))
+        str_flags += " CARD_IS_LOCKED";
+    if (frame.mData1 & (1 << 24))
+        str_flags += " LOCK_UNLOCK_FAILED";
+    if (frame.mData1 & (1 << 23))
+        str_flags += " COM_CRC_ERROR";
+    if (frame.mData1 & (1 << 22))
+        str_flags += " ILLEGAL_COMMAND";
+    if (frame.mData1 & (1 << 21))
+        str_flags += " CARD_ECC_FAILED";
+    if (frame.mData1 & (1 << 20))
+        str_flags += " CC_ERROR";
+    if (frame.mData1 & (1 << 19))
+        str_flags += " ERROR";
+    if (frame.mData1 & (1 << 18))
+        str_flags += " UNDERRUN";
+    if (frame.mData1 & (1 << 17))
+        str_flags += " OVERRUN";
+    if (frame.mData1 & (1 << 16))
+        str_flags += " CID/CSD_OVERWRITE";
+    if (frame.mData1 & (1 << 15))
+        str_flags += " WP_ERASE_SKIP";
+    if (frame.mData1 & (1 << 13))
+        str_flags += " ERASE_RESET";
+    if (frame.mData1 & (1 << 8))
+        str_flags += " READY_FOR_DATA";
+    if (frame.mData1 & (1 << 7))
+        str_flags += " SWITCH_ERROR";
+    if (frame.mData1 & (1 << 5))
+        str_flags += " APP_CMD";
+    return str_flags;
 }
 
 void SDMMCAnalyzerResults::GeneratePacketTabularText(U64 packet_id, DisplayBase display_base)

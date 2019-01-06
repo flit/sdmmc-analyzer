@@ -28,6 +28,8 @@ public:
 protected:
 	SDMMCAnalyzerSettings *mSettings;
 	SDMMCAnalyzer *mAnalyzer;
+
+    std::string GetResponseFlagsDescription(const Frame& frame);
 };
 
 #endif
