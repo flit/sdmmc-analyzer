@@ -38,17 +38,10 @@ void SDMMCAnalyzerResults::GenerateBubbleText(U64 frame_index, Channel& channel,
 	ClearResultStrings();
 	Frame frame = GetFrame(frame_index);
 
+    char str_cmd[4];
 	switch (frame.mType) {
-	case FRAMETYPE_HEADER:
-		if (frame.mData1 == 1)
-			AddResultString("Host sending");
-		else
-			AddResultString("Card sending");
-		break;
-
 	case FRAMETYPE_COMMAND:
 	{
-		char str_cmd[4];
 		char str_arg[33];
 
 		AnalyzerHelpers::GetNumberString(frame.mData1, Decimal, 6, str_cmd, sizeof(str_cmd));
@@ -60,7 +53,39 @@ void SDMMCAnalyzerResults::GenerateBubbleText(U64 frame_index, Channel& channel,
 		break;
 	}
 
-	case FRAMETYPE_RESPONSE:
+    case FRAMETYPE_RESPONSE:
+    {
+        const char *responseType;
+        switch (frame.mFlags) {
+        case MMC_RSP_R1:
+            responseType = "R1";
+            break;
+        case MMC_RSP_R2_CID:
+            responseType = "R2";
+            break;
+        case MMC_RSP_R2_CSD:
+            responseType = "R2";
+            break;
+        case MMC_RSP_R3:
+            responseType = "R3";
+            break;
+        case MMC_RSP_R4:
+            responseType = "R4";
+            break;
+        case MMC_RSP_R5:
+            responseType = "R5";
+            break;
+        }
+
+        AnalyzerHelpers::GetNumberString(frame.mData1, Decimal, 32, str_cmd, sizeof(str_cmd));
+
+        AddResultString(responseType);
+        AddResultString(responseType, " CMD", str_cmd);
+
+        break;
+    }
+
+	case FRAMETYPE_RESPONSE_DATA:
 	{
 		char str_32[33];
 
@@ -72,24 +97,21 @@ void SDMMCAnalyzerResults::GenerateBubbleText(U64 frame_index, Channel& channel,
 
 			AnalyzerHelpers::GetNumberString(frame.mData1, display_base, 32, str_32, sizeof(str_32));
 			
-			AddResultString("R1");
-			AddResultString("R1, ", str_state);
-			AddResultString("R1, ", str_state, ", rsp=", str_32);
+			AddResultString("Status");
+			AddResultString("Status: ", str_state);
+			AddResultString("Status: ", str_state, ", rsp=", str_32);
 
 			if (str_flags.length() > 0)
-				AddResultString("R1, ", str_state, ", rsp=", str_32, str_flags.c_str());
+				AddResultString("Status: ", str_state, ", rsp=", str_32, str_flags.c_str());
 
 			break;
 		}
 		case MMC_RSP_R2_CID:
 		{
-			std::string res("R2");
+			std::string res("[CID]");
 			char pname[7], prv_str[4], psn_str[12];
 			char rsp_str[64];
 
-			AddResultString(res.c_str());
-
-			res += " [CID]";
 			AddResultString(res.c_str());
 
 			res += " rsp=";
@@ -135,13 +157,13 @@ void SDMMCAnalyzerResults::GenerateBubbleText(U64 frame_index, Channel& channel,
 		}
 		case MMC_RSP_R2_CSD:
 		{
-			std::string res("R2");
+			std::string res("[CSD]");
 			char rsp_str[64];
 
 			AddResultString(res.c_str());
 
-			res += " [CSD]";
-			AddResultString(res.c_str());
+//            res += " [CSD]";
+//            AddResultString(res.c_str());
 
 			res += " rsp=";
 			AnalyzerHelpers::GetNumberString(frame.mData1 >> 32, display_base, 32, rsp_str, sizeof(rsp_str));
@@ -161,8 +183,8 @@ void SDMMCAnalyzerResults::GenerateBubbleText(U64 frame_index, Channel& channel,
 		}
 		case MMC_RSP_R3:
 			AnalyzerHelpers::GetNumberString(frame.mData1, Hexadecimal, 32, str_32, sizeof(str_32));
-			AddResultString("R3");
-			AddResultString("R3, ocr=", str_32);
+            AddResultString("ocr");
+			AddResultString("ocr=", str_32);
 			break;
 		case MMC_RSP_R4:
 			AddResultString("R4");
@@ -182,6 +204,13 @@ void SDMMCAnalyzerResults::GenerateBubbleText(U64 frame_index, Channel& channel,
 
 		AddResultString("CRC");
 		AddResultString("CRC=", str_crc);
+
+//        if (frame.mData2 == 1) {
+//            AddResultString("CRC=", str_crc, " [invalid!]");
+//        }
+//        else {
+//            AddResultString("CRC=", str_crc, " [good]");
+//        }
 		break;
 	}
 
@@ -201,17 +230,10 @@ void SDMMCAnalyzerResults::GenerateFrameTabularText(U64 frame_index, DisplayBase
 	ClearTabularText();
     Frame frame = GetFrame(frame_index);
 
+    char str_cmd[4];
     switch (frame.mType) {
-    case FRAMETYPE_HEADER:
-        if (frame.mData1 == 1)
-            AddTabularText("Host sending");
-        else
-            AddTabularText("Card sending");
-        break;
-
     case FRAMETYPE_COMMAND:
     {
-        char str_cmd[4];
         char str_arg[33];
 
         AnalyzerHelpers::GetNumberString(frame.mData1, Decimal, 6, str_cmd, sizeof(str_cmd));
@@ -222,6 +244,34 @@ void SDMMCAnalyzerResults::GenerateFrameTabularText(U64 frame_index, DisplayBase
     }
 
     case FRAMETYPE_RESPONSE:
+        const char *responseType;
+        switch (frame.mFlags) {
+        case MMC_RSP_R1:
+            responseType = "R1";
+            break;
+        case MMC_RSP_R2_CID:
+            responseType = "R2";
+            break;
+        case MMC_RSP_R2_CSD:
+            responseType = "R2";
+            break;
+        case MMC_RSP_R3:
+            responseType = "R3";
+            break;
+        case MMC_RSP_R4:
+            responseType = "R4";
+            break;
+        case MMC_RSP_R5:
+            responseType = "R5";
+            break;
+        }
+
+        AnalyzerHelpers::GetNumberString(frame.mData1, Decimal, 32, str_cmd, sizeof(str_cmd));
+
+        AddTabularText(responseType, " CMD", str_cmd);
+        break;
+
+    case FRAMETYPE_RESPONSE_DATA:
     {
         char str_32[33];
 
@@ -233,21 +283,20 @@ void SDMMCAnalyzerResults::GenerateFrameTabularText(U64 frame_index, DisplayBase
 
             AnalyzerHelpers::GetNumberString(frame.mData1, display_base, 32, str_32, sizeof(str_32));
 
-            AddTabularText("R1, ", str_state, ", rsp=", str_32);
-
-            if (str_flags.length() > 0)
-                AddTabularText("R1, ", str_state, ", rsp=", str_32, str_flags.c_str());
+            if (str_flags.length() > 0) {
+                AddTabularText("Status: ", str_state, ", rsp=", str_32, str_flags.c_str());
+            }
+            else {
+                AddTabularText("Status: ", str_state, ", rsp=", str_32);
+            }
 
             break;
         }
         case MMC_RSP_R2_CID:
         {
-            std::string res("R2");
+            std::string res("[CID]");
             char pname[7], prv_str[4], psn_str[12];
             char rsp_str[64];
-
-
-            res += " [CID]";
 
             res += " rsp=";
             AnalyzerHelpers::GetNumberString(frame.mData1 >> 32, display_base, 32, rsp_str, sizeof(rsp_str));
@@ -291,11 +340,8 @@ void SDMMCAnalyzerResults::GenerateFrameTabularText(U64 frame_index, DisplayBase
         }
         case MMC_RSP_R2_CSD:
         {
-            std::string res("R2");
+            std::string res("[CSD]");
             char rsp_str[64];
-
-
-            res += " [CSD]";
 
             res += " rsp=";
             AnalyzerHelpers::GetNumberString(frame.mData1 >> 32, display_base, 32, rsp_str, sizeof(rsp_str));
@@ -315,7 +361,7 @@ void SDMMCAnalyzerResults::GenerateFrameTabularText(U64 frame_index, DisplayBase
         }
         case MMC_RSP_R3:
             AnalyzerHelpers::GetNumberString(frame.mData1, Hexadecimal, 32, str_32, sizeof(str_32));
-            AddTabularText("R3, ocr=", str_32);
+            AddTabularText("ocr=", str_32);
             break;
         case MMC_RSP_R4:
             AddTabularText("R4");
@@ -334,11 +380,17 @@ void SDMMCAnalyzerResults::GenerateFrameTabularText(U64 frame_index, DisplayBase
         AnalyzerHelpers::GetNumberString(frame.mData1, Hexadecimal, 7, str_crc, sizeof(str_crc));
 
         AddTabularText("CRC=", str_crc);
+
+//        if (frame.mData2 == 1) {
+//            AddTabularText("CRC=", str_crc, " [invalid!]");
+//        }
+//        else {
+//            AddTabularText("CRC=", str_crc, " [good]");
+//        }
         break;
     }
 
     default:
-//        AddResultString("error");
         break;
     }
 }

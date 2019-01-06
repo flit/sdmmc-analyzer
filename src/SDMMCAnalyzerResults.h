@@ -19,9 +19,9 @@ public:
 
 public:
 	enum FrameType {
-		FRAMETYPE_HEADER,
 		FRAMETYPE_COMMAND,
 		FRAMETYPE_RESPONSE,
+        FRAMETYPE_RESPONSE_DATA,
 		FRAMETYPE_CRC,
 	};
 

@@ -106,7 +106,8 @@ int SDMMCAnalyzer::TryReadCommand()
 	if (mCommand->GetBitState() != BIT_LOW)
 		return -1;
 
-	mResults->AddMarker(mClock->GetSampleNumber(), AnalyzerResults::Start, mSettings->mCommandChannel);
+    U64 commandStartSample = mClock->GetSampleNumber();
+	mResults->AddMarker(commandStartSample, AnalyzerResults::Start, mSettings->mCommandChannel);
 	AdvanceToNextClock();
 	
 	/* transfer bit */
@@ -118,19 +119,22 @@ int SDMMCAnalyzer::TryReadCommand()
 	AdvanceToNextClock();
 
 	/* command index and argument */
+    Frame commandFrame;
 	{
 		Frame frame;
 
-		frame.mStartingSampleInclusive = mClock->GetSampleNumber();
+		frame.mStartingSampleInclusive = commandStartSample;
 		frame.mData1 = 0;
 		frame.mData2 = 0;
 		frame.mType = SDMMCAnalyzerResults::FRAMETYPE_COMMAND;
 
+        // read 6-bit command index
 		for (int i = 0; i < 6; i++) {
 			frame.mData1 = (frame.mData1 << 1) | mCommand->GetBitState();
 			AdvanceToNextClock();
 		}
 
+        // read 32-bit command argument
 		for (int i = 0; i < 32; i++) {
 			frame.mData2 = (frame.mData2 << 1) | mCommand->GetBitState();
 			AdvanceToNextClock();
@@ -138,6 +142,7 @@ int SDMMCAnalyzer::TryReadCommand()
 
 		frame.mEndingSampleInclusive = mClock->GetSampleNumber() - 1;
 		mResults->AddFrame(frame);
+        commandFrame = frame;
 		
 		/* save index for returning */
 		index = (int)frame.mData1;
@@ -149,12 +154,27 @@ int SDMMCAnalyzer::TryReadCommand()
 
 		frame.mStartingSampleInclusive = mClock->GetSampleNumber();
 		frame.mData1 = 0;
+        frame.mData2 = 0; // is bad
 		frame.mType = SDMMCAnalyzerResults::FRAMETYPE_CRC;
 
 		for (int i = 0; i < 7; i++) {
 			frame.mData1 = (frame.mData1 << 1) | mCommand->GetBitState();
 			AdvanceToNextClock();
 		}
+
+        // check crc. for commands the crc is always computed over 40 bits.
+//        U8 crcBuffer[5];
+//        crcBuffer[0] = 0x40 | commandFrame.mData1; // start bit, transfer bit, cmd index
+//        crcBuffer[1] = (commandFrame.mData2 >> 24) & 0xff;
+//        crcBuffer[2] = (commandFrame.mData2 >> 16) & 0xff;
+//        crcBuffer[3] = (commandFrame.mData2 >> 8) & 0xff;
+//        crcBuffer[4] = commandFrame.mData2 & 0xff;
+//        U8 crc7 = SDMMCHelpers::crc7(&crcBuffer[0], sizeof(crcBuffer));
+
+//        if (crc7 != frame.mData1) {
+//            frame.mFlags |= DISPLAY_AS_ERROR_FLAG;
+//            frame.mData2 = 1;
+//        }
 
 		frame.mEndingSampleInclusive = mClock->GetSampleNumber() - 1;
 		mResults->AddFrame(frame);
@@ -171,53 +191,75 @@ int SDMMCAnalyzer::TryReadCommand()
 
 int SDMMCAnalyzer::WaitForAndReadMMCResponse(const struct MMCResponse& response)
 {
+    int i;
 	int timeout = response.mTimeout + 3; // add some slack time
 
-	while (timeout-- >= 0 && mCommand->GetBitState() != BIT_LOW)
+	while (timeout-- >= 0 && mCommand->GetBitState() != BIT_LOW) {
 		AdvanceToNextClock();
+    }
 
-	if (timeout < 0)
+	if (timeout < 0) {
 		return -1;
+    }
 
-	mResults->AddMarker(mClock->GetSampleNumber(), AnalyzerResults::Start, mSettings->mCommandChannel);
-	AdvanceToNextClock();
-	
-	/* transfer bit */
-	if (mCommand->GetBitState() != BIT_LOW) {
-		/* if card is not transferring this is no response */
-		mResults->AddMarker(mClock->GetSampleNumber(), AnalyzerResults::X, mSettings->mCommandChannel);
-		return -1;
-	}
-	AdvanceToNextClock();
+    // response
+    U8 responseCommandIndex = 0;
+    {
+        U64 responseStartSample = mClock->GetSampleNumber();
 
-	/* skip 6 bits */
-	for (int i = 0; i < 6; i++)
-		AdvanceToNextClock();
+        Frame frame;
+        frame.mStartingSampleInclusive = responseStartSample;
+        frame.mType = SDMMCAnalyzerResults::FRAMETYPE_RESPONSE;
+        frame.mFlags = response.mType;
 
-	/* response */
+        mResults->AddMarker(responseStartSample, AnalyzerResults::Start, mSettings->mCommandChannel);
+        AdvanceToNextClock();
+
+        /* transfer bit */
+        if (mCommand->GetBitState() != BIT_LOW) {
+            /* if card is not transferring this is no response */
+            mResults->AddMarker(mClock->GetSampleNumber(), AnalyzerResults::X, mSettings->mCommandChannel);
+            return -1;
+        }
+        AdvanceToNextClock();
+
+        /* read 6 bit command index */
+        for (i = 0; i < 6; i++) {
+            responseCommandIndex = (responseCommandIndex << 1) | mCommand->GetBitState();
+            AdvanceToNextClock();
+        }
+        frame.mData1 = responseCommandIndex;
+
+        frame.mEndingSampleInclusive = mClock->GetSampleNumber() - 1;
+        mResults->AddFrame(frame);
+    }
+
+	/* response data */
+    Frame responseFrame;
 	{
 		Frame frame;
 
 		frame.mStartingSampleInclusive = mClock->GetSampleNumber();
 		frame.mData1 = 0;
 		frame.mData2 = 0;
-		frame.mType = SDMMCAnalyzerResults::FRAMETYPE_RESPONSE;
+		frame.mType = SDMMCAnalyzerResults::FRAMETYPE_RESPONSE_DATA;
 		frame.mFlags = response.mType;
 
 		int bits = response.mBits;
 
-		for (int i = 0; i < 64 && bits > 0; i++, bits--) {
+		for (i = 0; i < 64 && bits > 0; i++, bits--) {
 			frame.mData1 = (frame.mData1 << 1) | mCommand->GetBitState();
 			AdvanceToNextClock();
 		}
 
-		for (int i = 0; i < 64 && bits > 0; i++, bits--) {
+		for (i = 0; i < 64 && bits > 0; i++, bits--) {
 			frame.mData2 = (frame.mData2 << 1) | mCommand->GetBitState();
 			AdvanceToNextClock();
 		}
 
 		frame.mEndingSampleInclusive = mClock->GetSampleNumber() - 1;
 		mResults->AddFrame(frame);
+        responseFrame = frame;
 	}
 
 	/* crc */
@@ -226,12 +268,27 @@ int SDMMCAnalyzer::WaitForAndReadMMCResponse(const struct MMCResponse& response)
 
 		frame.mStartingSampleInclusive = mClock->GetSampleNumber();
 		frame.mData1 = 0;
+        frame.mData2 = 0; // is bad
 		frame.mType = SDMMCAnalyzerResults::FRAMETYPE_CRC;
 
-		for (int i = 0; i < 7; i++) {
+		for (i = 0; i < 7; i++) {
 			frame.mData1 = (frame.mData1 << 1) | mCommand->GetBitState();
 			AdvanceToNextClock();
 		}
+
+        // check crc, always computed over 40 bits.
+//        U8 crcBuffer[5];
+//        crcBuffer[0] = 0x00 | responseCommandIndex; // start bit, transfer bit, cmd index
+//        crcBuffer[1] = (responseFrame.mData1 >> 24) & 0xff;
+//        crcBuffer[2] = (responseFrame.mData1 >> 16) & 0xff;
+//        crcBuffer[3] = (responseFrame.mData1 >> 8) & 0xff;
+//        crcBuffer[4] = responseFrame.mData1 & 0xff;
+//        U8 crc7 = SDMMCHelpers::crc7(&crcBuffer[0], sizeof(crcBuffer));
+
+//        if (crc7 != frame.mData1) {
+//            frame.mFlags |= DISPLAY_AS_ERROR_FLAG;
+//            frame.mData2 = 1;
+//        }
 
 		frame.mEndingSampleInclusive = mClock->GetSampleNumber() - 1;
 		mResults->AddFrame(frame);
