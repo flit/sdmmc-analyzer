@@ -59,6 +59,9 @@ void SDMMCAnalyzer::WorkerThread()
             if (response.mType != MMC_RSP_NONE)
                 WaitForAndReadMMCResponse(response);
 		}
+
+        mResults->CommitPacketAndStartNewPacket();
+        mResults->CommitResults();
 	}
 }
 
