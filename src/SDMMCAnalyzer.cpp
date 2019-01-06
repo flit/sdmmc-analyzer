@@ -169,7 +169,7 @@ int SDMMCAnalyzer::TryReadCommand()
 	return index;
 }
 
-int SDMMCAnalyzer::WaitForAndReadMMCResponse(struct MMCResponse response)
+int SDMMCAnalyzer::WaitForAndReadMMCResponse(const struct MMCResponse& response)
 {
 	int timeout = response.mTimeout + 3; // add some slack time
 
